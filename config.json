@@ -1,0 +1,31 @@
+{
+  "concurrency": 1000,
+  "client": {
+    "drop_excess_requests": false
+  },
+  "storage": {
+    "mode": "postgres",
+    "configStore": {
+      "enabled": true,
+      "type": "postgres",
+      "connection_string": "env.DATABASE_URL"
+    },
+    "logsStore": {
+      "enabled": true,
+      "type": "postgres",
+      "connection_string": "env.DATABASE_URL"
+    }
+  },
+  "providers": {
+    "openrouter": {
+      "enabled": true,
+      "keys": [
+        {
+          "name": "primary-openrouter",
+          "value": "env.OPENROUTER_API_KEY",
+          "weight": 1.0
+        }
+      ]
+    }
+  }
+}

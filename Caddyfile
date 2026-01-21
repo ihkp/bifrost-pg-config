@@ -1,0 +1,32 @@
+{
+    # Security: Disable the admin API
+    admin off
+}
+
+# Strictly listen on Port 80 (HTTP). 
+# Do not use your domain name here, or Caddy will try to generate SSL certs.
+:80 {
+    # 1. Health check (Public)
+    handle /health {
+        reverse_proxy bifrost:8080
+    }
+
+    # 2. LLM Interactions (Public - Protected by Bifrost Virtual Keys)
+    handle /v1* {
+        reverse_proxy bifrost:8080
+    }
+
+    # 3. Admin & Governance (Secured by Caddy Basic Auth)
+    handle {
+        basicauth {
+            {$ADMIN_USER} {$ADMIN_PASS_HASH}
+        }
+        reverse_proxy bifrost:8080
+    }
+
+    # Logging (Optional but recommended)
+    log {
+        output file /var/log/caddy/access.log
+        format json
+    }
+}
