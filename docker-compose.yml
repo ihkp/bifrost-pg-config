@@ -1,6 +1,6 @@
 services:
   bifrost:
-    image: maximhq/bifrost:latest
+    image: docker.io/maximhq/bifrost:latest
     container_name: bifrost
     restart: always
     environment:
@@ -8,8 +8,8 @@ services:
       - DATABASE_URL=${DATABASE_URL}
       - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
     volumes:
-      - ./config.json:/app/config.json
-    # Healthcheck to ensure Bifrost is ready before receiving traffic
+      # Podman requires absolute paths or specific relative syntax
+      - ${PWD}/config.json:/app/config.json:Z
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 10s
@@ -17,20 +17,18 @@ services:
       retries: 3
 
   caddy:
-    image: caddy:latest
+    image: docker.io/library/caddy:latest
     container_name: caddy
     restart: always
     ports:
       - "80:80"
-      # Uncomment 443 if Caddy handles SSL (LB is TCP pass-through)
-      # - "443:443"
     environment:
       - ADMIN_USER=${ADMIN_USER}
       - ADMIN_PASS_HASH=${ADMIN_PASS_HASH}
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
-      - caddy_data:/data
-      - caddy_config:/config
+      - ${PWD}/Caddyfile:/etc/caddy/Caddyfile:Z
+      - caddy_data:/data:Z
+      - caddy_config:/config:Z
     depends_on:
       bifrost:
         condition: service_healthy

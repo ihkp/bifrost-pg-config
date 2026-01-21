@@ -18,7 +18,7 @@
 
     # 3. Admin & Governance (Secured by Caddy Basic Auth)
     handle {
-        basicauth {
+        basic_auth {
             {$ADMIN_USER} {$ADMIN_PASS_HASH}
         }
         reverse_proxy bifrost:8080
