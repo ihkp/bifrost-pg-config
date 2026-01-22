@@ -3,44 +3,30 @@
     admin off
 }
 
+# Strictly listen on Port 80 (HTTP). 
+# Do not use your domain name here, or Caddy will try to generate SSL certs.
 :80 {
-    # Logging (Global for this server block)
-    log {
-        output file /data/access.log {
-            roll_size 10mb     # Rotate after file reaches 10MB
-            roll_keep 10       # Keep only the last 10 rotated files
-        }
-        format json
+    # 1. Health check (Public)
+    handle /health {
+        reverse_proxy bifrost:8080
     }
 
-    # Main Logic: Only strictly matches paths starting with /ai-router/
-    # handle_path strips the prefix from the request before processing content inside
-    handle_path /ai-router/* {
-        
-        # 1. Health check (Public)
-        # Effectively matches: /ai-router/health
-        handle /health {
-            reverse_proxy bifrost:8080
-        }
-
-        # 2. LLM Interactions (Public)
-        # Effectively matches: /ai-router/v1*
-        handle /v1* {
-            reverse_proxy bifrost:8080
-        }
-
-        # 3. Admin & Governance (Secured by Basic Auth)
-        # Catch-all for everything else under /ai-router/
-        handle {
-            basic_auth {
-                {$ADMIN_USER} {$ADMIN_PASS_HASH}
-            }
-            reverse_proxy bifrost:8080
-        }
+    # 2. LLM Interactions (Public - Protected by Bifrost Virtual Keys)
+    handle /v1* {
+        reverse_proxy bifrost:8080
     }
 
-    # Fallback: Handle requests that do NOT start with /ai-router/
+    # 3. Admin & Governance (Secured by Caddy Basic Auth)
     handle {
-        respond "Not Found" 404
+        basic_auth {
+            {$ADMIN_USER} {$ADMIN_PASS_HASH}
+        }
+        reverse_proxy bifrost:8080
+    }
+
+    # Logging (Optional but recommended)
+    log {
+        output file /var/log/caddy/access.log
+        format json
     }
 }
