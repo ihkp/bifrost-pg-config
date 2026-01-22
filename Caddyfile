@@ -21,9 +21,8 @@
             {$ADMIN_USER} {$ADMIN_PASS_HASH}
         }
         reverse_proxy bifrost:8080 {
-            # Fixes WebSocket "Origin not allowed" error
-            # This tricks Bifrost into thinking the request is local
             header_up Host {host}
+            header_up X-Real-IP {remote}
             header_up Origin {scheme}://{host}
         }
     }
