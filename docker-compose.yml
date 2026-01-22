@@ -8,8 +8,13 @@ services:
       - DATABASE_URL=${DATABASE_URL}
       - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
     volumes:
-      # Podman requires absolute paths or specific relative syntax
       - ${PWD}/config.json:/app/config.json:Z
+    # 1. Limit Bifrost's console logs
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 10s
@@ -29,6 +34,12 @@ services:
       - ${PWD}/Caddyfile:/etc/caddy/Caddyfile:Z
       - caddy_data:/data:Z
       - caddy_config:/config:Z
+    # 2. Limit Caddy's console logs (startup messages, errors)
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
     depends_on:
       bifrost:
         condition: service_healthy
