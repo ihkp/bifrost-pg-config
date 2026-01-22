@@ -1,7 +1,14 @@
 {
+  "$schema": "https://www.getbifrost.ai/schema",
   "concurrency": 1000,
   "client": {
     "drop_excess_requests": false
+  },
+  "governance": {
+    "enabled": true
+  },
+  "logging": {
+    "enabled": true
   },
   "storage": {
     "mode": "postgres",

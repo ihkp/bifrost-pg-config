@@ -3,8 +3,7 @@
     admin off
 }
 
-# Strictly listen on Port 80 (HTTP). 
-# Do not use your domain name here, or Caddy will try to generate SSL certs.
+# Strictly listen on Port 80 (HTTP)
 :80 {
     # 1. Health check (Public)
     handle /health {
@@ -21,10 +20,14 @@
         basic_auth {
             {$ADMIN_USER} {$ADMIN_PASS_HASH}
         }
-        reverse_proxy bifrost:8080
+        reverse_proxy bifrost:8080 {
+            # Fixes WebSocket "Origin not allowed" error
+            # This tricks Bifrost into thinking the request is local
+            header_up Host {host}
+            header_up Origin {scheme}://{host}
+        }
     }
 
-    # Logging (Optional but recommended)
     log {
         output file /var/log/caddy/access.log
         format json
