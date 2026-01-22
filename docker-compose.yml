@@ -8,7 +8,7 @@ services:
       - DATABASE_URL=${DATABASE_URL}
       - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
     volumes:
-      - ${PWD}/config.json:/app/config.json:Z
+      - ${PWD}/config.json:/app/data/config.json:Z
     # 1. Limit Bifrost's console logs
     logging:
       driver: "json-file"
