@@ -12,12 +12,12 @@
   },
   "storage": {
     "mode": "postgres",
-    "configStore": {
+    "config_store": {
       "enabled": true,
       "type": "postgres",
       "connection_string": "env.DATABASE_URL"
     },
-    "logsStore": {
+    "logs_store": {
       "enabled": true,
       "type": "postgres",
       "connection_string": "env.DATABASE_URL"

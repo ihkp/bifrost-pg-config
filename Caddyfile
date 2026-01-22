@@ -23,7 +23,6 @@
         reverse_proxy bifrost:8080 {
             header_up Host {host}
             header_up X-Real-IP {remote}
-            header_up Origin {scheme}://{host}
         }
     }
 
