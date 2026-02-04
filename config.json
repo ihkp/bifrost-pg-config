@@ -10,17 +10,28 @@
   "logging": {
     "enabled": true
   },
-  "storage": {
-    "mode": "postgres",
-    "config_store": {
-      "enabled": true,
-      "type": "postgres",
-      "connection_string": "env.DATABASE_URL"
-    },
-    "logs_store": {
-      "enabled": true,
-      "type": "postgres",
-      "connection_string": "env.DATABASE_URL"
+  "config_store": {
+    "enabled": true,
+    "type": "postgres",
+    "config": {
+      "host": "172.16.0.2",
+      "port": "5432",
+      "user": "",
+      "password": "",
+      "db_name": "bifrost",
+      "ssl_mode": "disable"
+    }
+  },
+  "logs_store": {
+    "enabled": true,
+    "type": "postgres",
+    "config": {
+      "host": "172.16.0.2",
+      "port": "5432",
+      "user": "",
+      "password": "",
+      "db_name": "bifrost",
+      "ssl_mode": "disable"
     }
   },
   "providers": {
