@@ -15,7 +15,17 @@
         reverse_proxy bifrost:8080
     }
 
-    # 3. Admin & Governance (Secured by Caddy Basic Auth)
+    # 3. WebSocket (no basic auth - browser WS API can't send auth headers)
+    #    Bifrost handles WS auth internally via ws-ticket mechanism
+    handle /ws {
+        reverse_proxy bifrost:8080 {
+            header_up Host {host}
+            header_up X-Real-IP {remote}
+            header_up Origin http://localhost:8080
+        }
+    }
+
+    # 4. Admin & Governance (Secured by Caddy Basic Auth)
     handle {
         basic_auth {
             {$ADMIN_USER} {$ADMIN_PASS_HASH}
