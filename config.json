@@ -2,12 +2,12 @@
   "$schema": "https://www.getbifrost.ai/schema",
   "concurrency": 1000,
   "client": {
-    "drop_excess_requests": false
+    "drop_excess_requests": false,
+    "enable_logging": true,
+    "disable_content_logging": true,
+    "log_retention_days": 15
   },
   "governance": {
-    "enabled": true
-  },
-  "logging": {
     "enabled": true
   },
   "config_store": {
@@ -16,8 +16,8 @@
     "config": {
       "host": "172.16.0.2",
       "port": "5432",
-      "user": "",
-      "password": "",
+      "user": "env.PG_USER",
+      "password": "env.PG_PASS",
       "db_name": "bifrost",
       "ssl_mode": "disable"
     }
@@ -28,8 +28,8 @@
     "config": {
       "host": "172.16.0.2",
       "port": "5432",
-      "user": "",
-      "password": "",
+      "user": "env.PG_USER",
+      "password": "env.PG_PASS",
       "db_name": "bifrost",
       "ssl_mode": "disable"
     }
