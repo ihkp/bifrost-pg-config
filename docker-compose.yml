@@ -18,8 +18,8 @@ services:
         max-size: "10m"
         max-file: "10"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
-      interval: 10s
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8080/health"]
+      interval: 1h
       timeout: 5s
       retries: 3
 
