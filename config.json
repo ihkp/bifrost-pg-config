@@ -5,7 +5,8 @@
     "drop_excess_requests": false,
     "enable_logging": true,
     "disable_content_logging": true,
-    "log_retention_days": 15
+    "log_retention_days": 15,
+    "max_request_body_size_mb": 200
   },
   "governance": {
     "enabled": true
