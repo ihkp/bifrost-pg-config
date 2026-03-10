@@ -1,6 +1,6 @@
 services:
   bifrost:
-    image: docker.io/maximhq/bifrost:latest
+    image: docker.io/maximhq/bifrost:v1.4.2
     container_name: bifrost
     restart: always
     environment:

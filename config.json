@@ -7,9 +7,13 @@
     "disable_content_logging": true,
     "log_retention_days": 15
   },
-  "governance": {
-    "enabled": true
-  },
+  "plugins": [
+    {
+      "name": "governance",
+      "enabled": true,
+      "version": 2
+    }
+  ],
   "config_store": {
     "enabled": true,
     "type": "postgres",
